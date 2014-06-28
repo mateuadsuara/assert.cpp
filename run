@@ -3,3 +3,4 @@ set -e
 compiled=`echo "$1" | cut -d "." -f 1`.compiled
 ./compile $1 $compiled
 ./$compiled
+rm $compiled
