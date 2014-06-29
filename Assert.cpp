@@ -111,7 +111,7 @@ class ThatVoidFunction{
     private:
         function<void()> fn;
         
-        bool doThrows(){
+        bool doThrowsAny(){
             bool thrown = false;
             try {
                 this->fn();
@@ -127,13 +127,21 @@ class ThatVoidFunction{
         }
 
         void throws(){
-            if (!this->doThrows())
-                throw ExpectationMismatch("Expected to throw exception");
+            if (!this->doThrowsAny())
+                throw ExpectationMismatch("Expected to throw something");
         }
 
-        void notThrows(){
-            if (this->doThrows())
-                throw ExpectationMismatch("Expected to not throw exception");
+        template <typename E>
+        void throws(){
+            bool thrown = false;
+            try {
+                this->fn();
+            } catch (E e) {
+                thrown = true;
+            }
+
+            if (!thrown)
+                throw ExpectationMismatch("Expected to throw something of the specified type");
         }
 };
 

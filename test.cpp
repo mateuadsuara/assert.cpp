@@ -6,43 +6,30 @@ using namespace std;
 int main(){
     auto assert = Assert();
 
-    assert.thatFn([]{
-        Assert().that(1).equals(1);
-    }).notThrows();
-
+    Assert().that(1).equals(1);
     assert.thatFn([]{
         Assert().that(1).equals(2);
     }).throws();
 
-    assert.thatFn([]{
-        Assert().that(true).equals(true);
-    }).notThrows();
-
-    assert.thatFn([]{
-        Assert().that(false).equals(false);
-    }).notThrows();
-
+    Assert().that(true).equals(true);
+    Assert().that(false).equals(false);
     assert.thatFn([]{
         Assert().that(false).equals(true);
     }).throws();
-
     assert.thatFn([]{
         Assert().that(true).equals(false);
     }).throws();
 
-    assert.thatFn([]{
-        Assert().that("foo").equals("foo");
-    }).notThrows();
-
+    Assert().that("foo").equals("foo");
     assert.thatFn([]{
         Assert().that("foo").equals("bar");
     }).throws();
 
-    assert.thatFn([]{
+    []{
         string foo1 = "foo";
         string foo2 = "foo";
         Assert().that(foo1).equals(foo2);
-    }).notThrows();
+    }();
 
     assert.thatFn([]{
         string foo = "foo";
@@ -50,10 +37,10 @@ int main(){
         Assert().that(foo).equals(bar);
     }).throws();
 
-    assert.thatFn([]{
+    []{
         string foo = "foo";
         Assert().that(foo).equals("foo");
-    }).notThrows();
+    }();
 
     assert.thatFn([]{
         string foo = "foo";
@@ -61,11 +48,11 @@ int main(){
         Assert().that(foo).equals(bar);
     }).throws();
 
-    assert.thatFn([]{
+    []{
         string foo_string = "foo";
         const char * foo_charpointer = "foo";
         Assert().that(foo_string).equals(foo_charpointer);
-    }).notThrows();
+    }();
 
     assert.thatFn([]{
         string bar = "bar";
@@ -98,33 +85,17 @@ int main(){
     }
     assert.that(mismatchThrown).equals(true);
 
-    mismatchThrown = false;
-    try {
-        Assert().thatFn([]{
-            throw exception();
-        }).throws();
-    } catch (ExpectationMismatch e) {
-        mismatchThrown = true;
-    }
-    assert.that(mismatchThrown).equals(false);
+    Assert().thatFn([]{ throw exception(); }).throws();
 
     mismatchThrown = false;
     try {
-        Assert().thatFn([]{}).notThrows();
-    } catch (ExpectationMismatch e) {
-        mismatchThrown = true;
-    }
-    assert.that(mismatchThrown).equals(false);
-
-    mismatchThrown = false;
-    try {
-        Assert().thatFn([]{
-            throw exception();
-        }).notThrows();
+        Assert().thatFn([]{}).throws<int>();
     } catch (ExpectationMismatch e) {
         mismatchThrown = true;
     }
     assert.that(mismatchThrown).equals(true);
+
+    Assert().thatFn([]{ throw 5; }).throws<int>();
 
     printf("OK!\n");
 }
