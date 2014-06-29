@@ -88,5 +88,43 @@ int main(){
         Assert().that(false).equals(0);
     }).throws();
 
+    bool mismatchThrown;
+
+    mismatchThrown = false;
+    try {
+        Assert().thatFn([]{}).throws();
+    } catch (ExpectationMismatch e) {
+        mismatchThrown = true;
+    }
+    assert.that(mismatchThrown).equals(true);
+
+    mismatchThrown = false;
+    try {
+        Assert().thatFn([]{
+            throw exception();
+        }).throws();
+    } catch (ExpectationMismatch e) {
+        mismatchThrown = true;
+    }
+    assert.that(mismatchThrown).equals(false);
+
+    mismatchThrown = false;
+    try {
+        Assert().thatFn([]{}).notThrows();
+    } catch (ExpectationMismatch e) {
+        mismatchThrown = true;
+    }
+    assert.that(mismatchThrown).equals(false);
+
+    mismatchThrown = false;
+    try {
+        Assert().thatFn([]{
+            throw exception();
+        }).notThrows();
+    } catch (ExpectationMismatch e) {
+        mismatchThrown = true;
+    }
+    assert.that(mismatchThrown).equals(true);
+
     printf("OK!\n");
 }
