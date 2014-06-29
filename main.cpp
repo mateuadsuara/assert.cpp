@@ -6,12 +6,30 @@ using namespace std;
 class ClassUnderTest{
     public:
         string doSomething(){
-            return "actual result";
+            return "result";
+        }
+        
+        void throwException(){
+            throw exception();
         }
 };
 
 int main(){
-    Assert( ClassUnderTest().doSomething() ).toBe( "expected result" );
+    auto assert = Assert();
+
+    assert
+        .that(
+            ClassUnderTest().doSomething()
+        )
+        .equals(
+            "result"
+        );
+
+    assert
+        .thatFn([]{
+            ClassUnderTest().throwException();
+        })
+        .throws();
 
     printf("Done!\n");
     return 0;
