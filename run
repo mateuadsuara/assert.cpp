@@ -1,10 +1,10 @@
 #!/bin/bash
 
-compiled=`echo "$1" | cut -d "." -f 1`.compiled
+compiled=/tmp/`echo "$1" | cut -d "." -f 1`.compiled
 
 set -e
 ./compile $1 $compiled
 set +e
 
-./$compiled
+$compiled
 rm $compiled
