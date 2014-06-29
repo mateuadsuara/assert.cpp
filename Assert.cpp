@@ -148,6 +148,9 @@ class ThatVoidFunction{
 class Assert{
     public:
         Assert(){}
+        Assert(bool expectedTrue){
+            ThatBool(expectedTrue).equals(true);
+        }
 
         ThatBool that(bool actual){
             return ThatBool(actual);

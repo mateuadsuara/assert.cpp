@@ -6,6 +6,11 @@ using namespace std;
 int main(){
     auto assert = Assert();
 
+    Assert(true);
+    assert.thatFn([]{
+        Assert(false);
+    }).throws();
+
     Assert().that(1).equals(1);
     assert.thatFn([]{
         Assert().that(1).equals(2);
