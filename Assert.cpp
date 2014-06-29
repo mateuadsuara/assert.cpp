@@ -71,8 +71,7 @@ class ThatString{
             return *this;
         }
         ThatString equals(const char * expected){
-            this->equals(string(expected));
-            return *this;
+            return this->equals(string(expected));
         }
 };
 
