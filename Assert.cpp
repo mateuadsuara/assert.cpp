@@ -27,6 +27,9 @@ class ThatBool{
         string str(bool value){
             return value == true? "true" : "false";
         }
+        string str(int value){
+            return to_string(value);
+        }
 
     public:
         ThatBool(bool actual){
@@ -38,6 +41,10 @@ class ThatBool{
                 this->mismatch(str(this->actual), str(expected));
 
             return *this;
+        }
+
+        void equals(int notEqualType){
+            this->mismatch(str(this->actual), str(notEqualType));
         }
 };
 
@@ -58,7 +65,7 @@ class ThatString{
         }
 
         ThatString equals(string expected){
-            if (this->actual.compare(expected) != 0){
+            if (this->actual != expected){
                 this->mismatch(this->actual, expected);
             }
             return *this;
@@ -74,7 +81,10 @@ class ThatInt{
         int actual;
 
         void mismatch(string actual, string expected){
-            throw ExpectationMismatch("Expected (" + actual + ") to equal (" + expected +   ")");
+            throw ExpectationMismatch("Expected (" + actual + ") to equal (" + expected + ")");
+        }
+        string str(bool value){
+            return value == true? "true" : "false";
         }
         string str(int value){
             return to_string(value);
@@ -91,6 +101,10 @@ class ThatInt{
             }
 
             return *this;
+        }
+        
+        void equals(bool notEqualType){
+            this->mismatch(str(this->actual), str(notEqualType));
         }
 };
 
@@ -133,6 +147,9 @@ class Assert{
         }
         ThatString that(string actual){
             return ThatString(actual);
+        }
+        ThatString that(const char * actual){
+            return ThatString(string(actual));
         }
         ThatInt that(int actual){
             return ThatInt(actual);
